@@ -1,5 +1,42 @@
-<datbaseChangeLog>
-    <changeSet id="create_task" author="sgolovachev">
-
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet id="create_app_user" author="sgolovachev">
+        <sql>
+            create table app_user (
+            id bigserial primary key,
+            name text
+            );
+        </sql>
     </changeSet>
-</datbaseChangeLog>
+
+    <changeSet id="create_task" author="sgolovachev">
+        <sql>
+            create table task (
+            id bigserial primary key,
+            header text,
+            description text,
+            status int4 not null,
+            priority int4 not null,
+            author int8 not null,
+            executor int8 not null,
+            constraint fk_task_app_user_author foreign key (author) references app_user(id),
+            constraint fk_task_app_user_executor foreign key (executor) references app_user(id)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="create_comment" author="sgolovachev">
+        <sql>
+            create table comment (
+            id bigserial primary key,
+            content text,
+            task int8 not null,
+            constraint fk_comment_task_task foreign key (task) references task(id)
+            );
+        </sql>
+    </changeSet>
+</databaseChangeLog>
