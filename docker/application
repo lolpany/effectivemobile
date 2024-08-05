@@ -1,0 +1,5 @@
+FROM amazoncorretto:17-alpine3.20-jdk
+RUN mkdir /usr/app
+COPY ../build/libs/effectivemobile-1.0-SNAPSHOT.jar /usr/app
+
+ENTRYPOINT java -jar /usr/app/effectivemobile-1.0-SNAPSHOT.jar ru.effectivemobile.EffectiveMobileApplication
